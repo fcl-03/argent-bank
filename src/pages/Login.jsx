@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { login } from '../store/authSlice'
 import { useNavigate } from 'react-router-dom'
+import { loginUser } from '../services/api'
 
 function Login() {
     const [email, setEmail] = useState('')
@@ -9,33 +10,25 @@ function Login() {
     const [error, setError] = useState('')
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
     async function handleSubmit(event) {
         event.preventDefault()
-  
-        const response = await fetch('http://localhost:3001/api/v1/user/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
-        })
-  
-        const data = await response.json()
-        console.log(data)
 
-        if (data.status === 200) {
-            dispatch(login({ token: data.body.token }))
-            navigate('/profile')
-        } else {
-            setError('Invalid email or password')
+        try {
+            const data = await loginUser(email, password)
+
+            if (data.status === 200) {
+                dispatch(login({ token: data.body.token }))
+                navigate('/profile')
+            } else {
+                setError('Invalid email or password')
+            }
+        } catch {
+            setError('Unable to connect to the server')
         }
     }
-    
+
   return (
-    
     <main className="main bg-dark">
       <section className="sign-in-content">
         <i className="fa fa-user-circle sign-in-icon"></i>
@@ -53,12 +46,11 @@ function Login() {
             <input type="checkbox" id="remember-me" />
             <label htmlFor="remember-me">Remember me</label>
           </div>
-          <button className="sign-in-button">Sign In</button> 
+          <button className="sign-in-button">Sign In</button>
           {error && <p className="error">{error}</p>}
         </form>
       </section>
     </main>
-    
   )
 }
 

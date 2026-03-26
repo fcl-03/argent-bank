@@ -31,7 +31,7 @@ function Navbar() {
         <div>
             {isLoggedIn ? (
                 <>
-                <Link className="main-nav-item" to="/Profile">
+                <Link className="main-nav-item" to="/profile">
                     <i className="fa fa-user-circle"></i>
                     {' '}{user?.firstName}
                 </Link>
@@ -40,7 +40,7 @@ function Navbar() {
                 </button>
                 </>
             ) : (
-                <Link className="main-nav-item" to="/Login">
+                <Link className="main-nav-item" to="/login">
                     <i className="fa fa-user-circle"></i>
                 {' '}Sign In
                 </Link>  

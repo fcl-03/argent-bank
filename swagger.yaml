@@ -1,92 +1,162 @@
-openapi: 3.0.0
+swagger: "2.0"
 info:
   title: Argent Bank Transactions API
   description: API endpoints for managing bank transactions
-  version: 1.0.0
-servers:
-  - url: http://localhost:3001/api/v1
-
+  version: "1.0.0"
+host: localhost:3001
+basePath: /api/v1
+schemes:
+  - http
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
 paths:
   /accounts/{accountId}/transactions:
     get:
-      summary: Get all transactions for an account
       security:
-        - bearerAuth: []
+        - Bearer: []
+      tags:
+        - Transaction Module
+      summary: Get all transactions for an account
+      description: API for fetching all transactions of a specific account for the current month
       parameters:
-        - name: accountId
-          in: path
+        - in: path
+          name: accountId
           required: true
+          type: string
           description: The account ID
-          schema:
-            type: string
       responses:
         "200":
           description: Transactions retrieved successfully
+          schema:
+            $ref: "#/definitions/TransactionsResponse"
         "401":
-          description: Unauthorized - Invalid token
+          description: Unauthorized
         "404":
           description: Account not found
+        "500":
+          description: Internal Server Error
   /accounts/{accountId}/transactions/{transactionId}:
     get:
-      summary: Get a single transaction by ID
       security:
-        - bearerAuth: []
+        - Bearer: []
+      tags:
+        - Transaction Module
+      summary: Get a single transaction
+      description: API for fetching a specific transaction by ID
       parameters:
-        - name: accountId
-          in: path
+        - in: path
+          name: accountId
           required: true
+          type: string
           description: The account ID
-          schema:
-            type: string
-        - name: transactionId
-          in: path
+        - in: path
+          name: transactionId
           required: true
+          type: string
           description: The transaction ID
-          schema:
-            type: string
       responses:
         "200":
           description: Transaction retrieved successfully
+          schema:
+            $ref: "#/definitions/TransactionResponse"
         "401":
-          description: Unauthorized - Invalid token
+          description: Unauthorized
         "404":
           description: Transaction not found
+        "500":
+          description: Internal Server Error
     put:
-      summary: Update transaction category and notes
       security:
-        - bearerAuth: []
+        - Bearer: []
+      tags:
+        - Transaction Module
+      summary: Update transaction details
+      description: API for updating transaction category and notes
       parameters:
-        - name: accountId
-          in: path
+        - in: path
+          name: accountId
           required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: path
+          type: string
+          description: The account ID
+        - in: path
+          name: transactionId
           required: true
+          type: string
+          description: The transaction ID
+        - in: body
+          name: body
+          required: true
+          description: Transaction fields to update
           schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                category:
-                  type: string
-                notes:
-                  type: string
+            $ref: "#/definitions/TransactionUpdate"
       responses:
         "200":
           description: Transaction updated successfully
+          schema:
+            $ref: "#/definitions/TransactionResponse"
         "401":
-          description: Unauthorized - Invalid token
+          description: Unauthorized
         "404":
           description: Transaction not found
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+        "500":
+          description: Internal Server Error
+definitions:
+  Transaction:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Transaction ID
+      date:
+        type: string
+        description: Transaction date
+      description:
+        type: string
+        description: Transaction description
+      amount:
+        type: number
+        description: Transaction amount
+      balance:
+        type: number
+        description: Account balance after transaction
+      type:
+        type: string
+        description: Transaction type
+      category:
+        type: string
+        description: Transaction category
+      notes:
+        type: string
+        description: Transaction notes
+  TransactionUpdate:
+    type: object
+    properties:
+      category:
+        type: string
+        description: Transaction category
+      notes:
+        type: string
+        description: Transaction notes
+  TransactionResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        $ref: "#/definitions/Transaction"
+  TransactionsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: array
+        items:
+          $ref: "#/definitions/Transaction"

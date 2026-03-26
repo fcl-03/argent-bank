@@ -46,28 +46,34 @@ function Profile() {
     
   
     return (
-        <>
-        <h1>Welcome back, {user?.firstName} {user?.lastName}!</h1>
-        {isEditing ? (
-            <form onSubmit={handleSaveUserName}>
-            <div className="input-firstname">
-                <label htmlFor="firstName">First name</label>
-                <input type='firstname' disabled id='fistname' placeholder={user?.firstName}/>
-            </div>
-            <div className="input-lastname">
-                <label htmlFor="lastName">Last name</label>
-                <input type='lastname' disabled id='lastname' placeholder={user?.lastName}/>
-            </div>
-            <div className="input-pseudo">
-                <label htmlFor="pseudo">User name</label>
-                <input type="username" id="pseudo" placeholder={user?.userName} value={newUserName} onChange={(e) => setNewUserName(e.target.value)} />
-            </div>
-            <button>Save</button> <button onClick={() => setIsEditing(false)}>Cancel</button>
-            </form>
-        ):(
-            <button onClick={() => setIsEditing(true)} className='edit-name'>Edit Name</button>
-        )}
-        </>
+        
+        <main className="main bg-dark">
+        <div className="header">
+            <h1>Welcome back, {user?.firstName} {user?.lastName}!</h1>
+        </div>
+            {isEditing ? (
+                <form className='edit-form' onSubmit={handleSaveUserName}>
+                <div className="input-firstname">
+                    <label htmlFor="firstName">First name: </label>
+                    <input type='firstname' disabled id='fistname' placeholder={user?.firstName}/>
+                </div>
+                <div className="input-lastname">
+                    <label htmlFor="lastName">Last name: </label>
+                    <input type='lastname' disabled id='lastname' placeholder={user?.lastName}/>
+                </div>
+                <div className="input-pseudo">
+                    <label htmlFor="pseudo">User name: </label>
+                   <input type="username" id="pseudo" placeholder={user?.userName} value={newUserName} onChange={(e) => setNewUserName(e.target.value)} />
+                </div>
+                <div className='buttons'>
+                <button>Save</button> <button onClick={() => setIsEditing(false)}>Cancel</button>
+                </div>
+                </form>
+            ):(
+                <button onClick={() => setIsEditing(true)} className='edit-button'>Edit Name</button>
+            )}
+        </main>
+        
     )
 }
 

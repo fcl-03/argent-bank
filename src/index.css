@@ -27,6 +27,10 @@ body {
   background-color: #12002b;
 }
 
+button {
+  cursor: pointer;
+}
+
 .sr-only {
   border: 0 !important;
   clip: rect(1px, 1px, 1px, 1px) !important; /* 1 */
@@ -63,6 +67,7 @@ body {
   background: none;
   border: none;
   font-size: large;
+  font-weight: bold;
 }
 
 .main-nav-item:hover {
@@ -111,6 +116,42 @@ body {
 
 .error {
   color: red;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 0rem;
+  color: white;
+}
+
+.edit-form .input-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.edit-form button {
+  padding: 0.5rem 2rem;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  border-color: #00bc77;
+  background-color: #00bc77;
+}
+
+.edit-form label {
+  width: 120px;
+  text-align: right;
+}
+
+.edit-form .buttons {
+  display: flex;
+  gap: 1rem;
 }
 
 @media (min-width: 920px) {

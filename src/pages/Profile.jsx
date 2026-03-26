@@ -1,8 +1,6 @@
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { setUser } from '../store/authSlice'
-import { useDispatch } from 'react-redux'
-import { fetchUserProfile, updateUserProfile } from '../services/api'
+import { fetchProfileThunk, updateUsernameThunk } from '../store/authSlice'
 import Account from '../components/Account'
 
 function Profile() {
@@ -11,29 +9,15 @@ function Profile() {
     const [isEditing, setIsEditing] = useState(false)
     const dispatch = useDispatch()
     const user = useSelector((state) => state.auth.user)
-    const token = useSelector((state) => state.auth.token)
 
         useEffect(() => {
-            async function fetchProfile() {
-                try {
-                    const data = await fetchUserProfile(token)
-                    dispatch(setUser(data.body))
-                } catch {
-                    console.error('Failed to fetch profile')
-                }
-            }
-            fetchProfile()
-        }, [dispatch, token])
+            dispatch(fetchProfileThunk())
+        }, [dispatch])
 
     async function handleSaveUserName(event) {
         event.preventDefault()
-        try {
-            const data = await updateUserProfile(token, newUserName)
-            dispatch(setUser(data.body))
-            setIsEditing(false)
-        } catch {
-            console.error('Failed to update username')
-        }
+        await dispatch(updateUsernameThunk(newUserName))
+        setIsEditing(false)
     }
 
     return (

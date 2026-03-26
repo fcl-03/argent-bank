@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { login } from '../store/authSlice'
+import { loginThunk } from '../store/authSlice'
 import { useNavigate } from 'react-router-dom'
-import { loginUser } from '../services/api'
 
 function Login() {
     const [email, setEmail] = useState('')
@@ -15,16 +14,10 @@ function Login() {
         event.preventDefault()
 
         try {
-            const data = await loginUser(email, password)
-
-            if (data.status === 200) {
-                dispatch(login({ token: data.body.token }))
-                navigate('/profile')
-            } else {
-                setError('Invalid email or password')
-            }
-        } catch {
-            setError('Unable to connect to the server')
+            await dispatch(loginThunk({ email, password })).unwrap()
+            navigate('/profile')
+        } catch (err) {
+            setError(err || 'Unable to connect to the server')
         }
     }
 

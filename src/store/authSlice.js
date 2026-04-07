@@ -33,9 +33,9 @@ export const updateUsernameThunk = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    token: localStorage.getItem("token") || null,
+    token: null,
     user: null,
-    isLoggedIn: !!localStorage.getItem("token"),
+    isLoggedIn: false,
     error: null,
   },
   reducers: {
@@ -44,7 +44,6 @@ const authSlice = createSlice({
       state.user = null;
       state.isLoggedIn = false;
       state.error = null;
-      localStorage.removeItem("token");
     },
   },
   extraReducers: (builder) => {
@@ -53,7 +52,6 @@ const authSlice = createSlice({
         state.token = action.payload;
         state.isLoggedIn = true;
         state.error = null;
-        localStorage.setItem("token", action.payload);
       })
       .addCase(loginThunk.rejected, (state, action) => {
         state.error = action.payload || "Unable to connect to the server";

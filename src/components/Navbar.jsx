@@ -33,7 +33,7 @@ function Navbar() {
                 <>
                 <Link className="main-nav-item" to="/profile">
                     <i className="fa fa-user-circle"></i>
-                    {' '}{user?.firstName}
+                    {' '}{user?.userName}
                 </Link>
                 <button onClick={handleSignOut} className="main-nav-item"> 
                     <i className="fa fa-sign-out"></i>{' '}Sign Out 

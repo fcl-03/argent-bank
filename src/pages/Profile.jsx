@@ -23,7 +23,7 @@ function Profile() {
     return (
         <main className="main bg-dark">
         <div className="header">
-            <h1>Welcome back,<br /> {user?.firstName} {user?.lastName}!</h1>
+            <h1>Welcome back,<br /> {user?.userName} !</h1>
         </div>
             {isEditing ? (
                 <form className='edit-form' onSubmit={handleSaveUserName}>
